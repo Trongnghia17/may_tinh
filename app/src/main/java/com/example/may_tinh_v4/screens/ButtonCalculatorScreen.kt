@@ -1,4 +1,4 @@
-package com.example.may_tinh_v4
+package com.example.may_tinh_v4.screens
 
 import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.*
@@ -6,6 +6,8 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardOptions
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
@@ -15,34 +17,39 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.navigation.NavController
+import com.example.may_tinh_v4.data.CalculationHistory
 
-data class CalculationHistory(
-    val firstNumber: Double,
-    val secondNumber: Double,
-    val operation: String,
-    val result: Double
-)
-
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun CalculatorScreen() {
+fun ButtonCalculatorScreen(navController: NavController = androidx.navigation.compose.rememberNavController()) {
     var firstNumber by remember { mutableStateOf("") }
     var secondNumber by remember { mutableStateOf("") }
     var result by remember { mutableStateOf("") }
     var history by remember { mutableStateOf(listOf<CalculationHistory>()) }
 
-    Column(
-        modifier = Modifier
-            .fillMaxSize()
-            .padding(16.dp),
-        horizontalAlignment = Alignment.CenterHorizontally
-    ) {
-        // Title
-        Text(
-            text = "Máy Tính",
-            fontSize = 24.sp,
-            fontWeight = FontWeight.Bold,
-            modifier = Modifier.padding(bottom = 16.dp)
-        )
+    Scaffold(
+        topBar = {
+            CenterAlignedTopAppBar(
+                title = { Text("Máy Tính (Buttons)") },
+                navigationIcon = {
+                    IconButton(onClick = { navController.navigateUp() }) {
+                        Icon(
+                            imageVector = Icons.Default.ArrowBack,
+                            contentDescription = "Quay lại"
+                        )
+                    }
+                }
+            )
+        }
+    ) { paddingValues ->
+        Column(
+            modifier = Modifier
+                .fillMaxSize()
+                .padding(paddingValues)
+                .padding(16.dp),
+            horizontalAlignment = Alignment.CenterHorizontally
+        ) {
 
         // First number input
         OutlinedTextField(
@@ -208,6 +215,7 @@ fun CalculatorScreen() {
                 HistoryItem(item)
             }
         }
+    }
     }
 }
 

@@ -29,14 +29,18 @@ fun RadioCalculatorScreen(navController: NavController = androidx.navigation.com
     var secondNumber by remember { mutableStateOf("") }
     var result by remember { mutableStateOf("") }
     var history by remember { mutableStateOf(listOf<CalculationHistory>()) }
-    
+
     val operations = listOf("+", "-", "×", "÷")
     var selectedOperation by remember { mutableStateOf(operations[0]) }
-    
+
+
+
+    val numberOptions = (-10..10).map { it.toString() }
+
     Scaffold(
         topBar = {
             CenterAlignedTopAppBar(
-                title = { Text("Máy Tính (Radio Group)") },
+                title = { Text("Máy Tính (ListView)") },
                 navigationIcon = {
                     IconButton(onClick = { navController.navigateUp() }) {
                         Icon(
@@ -56,27 +60,27 @@ fun RadioCalculatorScreen(navController: NavController = androidx.navigation.com
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
 
-        // First number input
-        OutlinedTextField(
-            value = firstNumber,
-            onValueChange = { firstNumber = it },
-            label = { Text("Số thứ nhất") },
-            keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(bottom = 8.dp)
-        )
+            // First number dropdown
+            NumberDropdown(
+                label = "Số thứ nhất",
+                selectedValue = firstNumber,
+                onValueChange = { firstNumber = it },
+                options = numberOptions,
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(bottom = 8.dp)
+            )
 
-        // Second number input
-        OutlinedTextField(
-            value = secondNumber,
-            onValueChange = { secondNumber = it },
-            label = { Text("Số thứ hai") },
-            keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(bottom = 16.dp)
-        )
+            // Second number dropdown
+            NumberDropdown(
+                label = "Số thứ hai",
+                selectedValue = secondNumber,
+                onValueChange = { secondNumber = it },
+                options = numberOptions,
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(bottom = 16.dp)
+            )
         
         // Radio Group for Operations
         Text(
